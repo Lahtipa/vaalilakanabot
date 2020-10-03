@@ -7,12 +7,12 @@ import requests
 from telegram.ext import Updater, MessageHandler, CommandHandler, Filters
 from lxml import html, etree
 
-TOKEN = os.environ['VAALILAKANABOT_TOKEN']
-ADMIN_CHAT_ID = # TODO fill chat id here
+TOKEN = os.environ['TG_VAALILAKANA2020']
+ADMIN_CHAT_ID =  -477053628 # TODO fill chat id here
 
 BASE_URL = 'https://fiirumi.fyysikkokilta.fi'
-TOPIC_LIST_URL = '{}/c/5.json'.format(BASE_URL) #TODO: update this to correspond current year discussion board
-QUESTION_LIST_URL = '{}/c/6.json'.format(BASE_URL) #TODO: update this to correspond current year discussion board
+TOPIC_LIST_URL = '{}/c/wappulaskuri-2020-count-down-to-wappu-2020.json'.format(BASE_URL) #TODO: update this to correspond current year discussion board
+QUESTION_LIST_URL = '{}/c/wappulaskuri-2020-count-down-to-wappu-2020.json'.format(BASE_URL) #TODO: update this to correspond current year discussion board
 
 channels = []
 vaalilakana = {}
@@ -63,12 +63,12 @@ def _vaalilakana_to_string(vaalilakana):
             selected = applicant['valittu']
             if selected == True:
                 if link:
-                    output += '- <a href="{link}">{name}</a> (valittu)\n'.format(
+                    output += '- <b><a href="{link}">{name}</a> (valittu)</b>\n'.format(
                         name=applicant['name'],
                         link=link
                     )
                 else:
-                    output += '- {name} (valittu)\n'.format(name=applicant['name'])
+                    output += '- <b>{name} (valittu)</b>\n'.format(name=applicant['name'])
             else:
                 if link:
                     output += '- <a href="{link}">{name}</a>\n'.format(
@@ -208,7 +208,6 @@ def add_fiirumi_to_applicant(update, context):
         if chat_id == ADMIN_CHAT_ID:
             text = update.message.text.replace('/lisaa_fiirumi', '').strip()
             params = text.split(',')
-            
             try:
                 position = params[0].strip()
                 name = params[1].strip()
@@ -428,7 +427,9 @@ def announce_new_applicant(update, context):
 def jauhis(update, context):
     try:
         chat_id = update.message.chat.id
-        with open('jauhis.png', 'rb') as jauhis:
+        #jauhis = "AAMCBAADGQEAAQdNRF9nRu2h8Zlcvj4WyixAT0LF9zNvAAJyAANRXtICu5pSefdluCqv454aAAQBAAdtAAO1bwACGwQ"
+        with open('jauhis.webp', 'rb') as jauhis:
+            print(jauhis)
             updater.bot.send_sticker(chat_id, jauhis)
     except Exception as e:
         print('[ERROR]', e)
